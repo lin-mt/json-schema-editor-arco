@@ -20,7 +20,7 @@ arco sync
 
 ```typescript jsx
 import JsonSchemaEditor from '@quiet-front-end/json-schema-editor-arco';
-import '@quiet-front-end/json-schema-editor-antd/dist/css/index.css';
+import '@quiet-front-end/json-schema-editor-arco/dist/css/index.css';
 import { useEffect } from 'react';
 
 export default (props: ApiEditProps) => {
