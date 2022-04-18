@@ -23,7 +23,7 @@ import JsonSchemaEditor from '@quiet-front-end/json-schema-editor-arco';
 import '@quiet-front-end/json-schema-editor-arco/dist/css/index.css';
 import { useEffect } from 'react';
 
-export default (props: ApiEditProps) => {
+export default () => {
 
   const [jsonData, setJsonData] = useEffect({});
 
