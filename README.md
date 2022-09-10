@@ -1,5 +1,9 @@
 # Json Schema 可视化编辑器（Arco）
 
+[![npm](https://img.shields.io/npm/v/@quiet-front-end/json-schema-editor-arco.svg)](https://www.npmjs.com/package/@quiet-front-end/json-schema-editor-arco)
+[![total](https://img.shields.io/npm/dt/@quiet-front-end/json-schema-editor-arco.svg)](https://img.shields.io/npm/dt/@quiet-front-end/json-schema-editor-arco.svg)
+![](https://img.shields.io/badge/license-MIT-000000.svg)
+
 [Arco Design](https://arco.design/) 风格的 Json Schema 可视化编辑器。
 
 [Antd Design](https://ant.design/) 风格：https://github.com/lin-mt/json-schema-editor-antd
