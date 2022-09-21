@@ -1,5 +1,4 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
-import { createSchema } from 'genson-js/dist';
 import {
   Button,
   Checkbox,
@@ -28,6 +27,7 @@ import SchemaOther from '../schema-other';
 import MockSelect from '../mock-select';
 import SchemaJson from '../schema-json';
 import Schema from '../../types/Schema';
+import { createSchema } from './genson-js';
 
 const Row = Grid.Row;
 const Col = Grid.Col;
