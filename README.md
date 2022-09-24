@@ -27,15 +27,13 @@ arco sync
 ## 示例
 
 ```shell
-npm install @quiet-front-end/json-schema-editor-arco @arco-design/web-react
+npm install @quiet-front-end/json-schema-editor-arco
 ```
 
 ```typescript jsx
 import { useState } from "react";
 import JsonSchemaEditor from '@quiet-front-end/json-schema-editor-arco';
 import '@quiet-front-end/json-schema-editor-arco/dist/css/index.css';
-// 如果项目使用的是 arco-design，可不引入以下样式
-import '@arco-design/web-react/dist/css/arco.css';
 
 export default () => {
 
