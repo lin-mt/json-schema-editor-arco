@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { Input, Message } from '@arco-design/web-react';
 import { RefInputType } from '@arco-design/web-react/es/Input/interface';
+import _ from 'lodash';
 
 interface FieldInputProp {
   value: string;
@@ -40,12 +41,15 @@ const FieldInput = (props: FieldInputProp): ReactElement => {
   };
 
   useEffect(() => {
-    ref.current.dom.addEventListener('focusout', () => {
-      if (ref.current.dom.value.length === 0) {
-        Message.warning('FieldName can not empty.');
-        ref.current.dom.focus();
-      }
-    });
+    ref.current.dom.addEventListener(
+      'blur',
+      _.debounce(() => {
+        if (ref.current.dom.value.length === 0) {
+          Message.warning('FieldName can not empty.');
+          ref.current.dom.focus();
+        }
+      }, 50)
+    );
   }, []);
 
   return (
