@@ -1,7 +1,7 @@
 import { Message } from '@arco-design/web-react';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { createContext, ReactElement, useState } from 'react';
+import React, { createContext, ReactElement, useEffect, useState } from 'react';
 import Schema from './types/Schema';
 import SchemaDescription from './types/SchemaDescription';
 import Editor from './components/editor';
@@ -31,27 +31,32 @@ export interface JsonSchemaEditorProps {
 export const SchemaMobxContext = createContext<SchemaDescription>(new SchemaDescription());
 
 const JsonSchemaObserverEditor = observer((props: JsonSchemaEditorProps) => {
-  let defaultSchema;
-  if (props.data) {
-    if (typeof props.data === 'string') {
-      try {
-        defaultSchema = JSON.parse(props.data);
-      } catch (e) {
-        Message.error('传入的字符串非 json 格式!');
-      }
-    } else if (Object.prototype.toString.call(props.data) === '[object Object]') {
-      // fixdata是空对象首行没有加号的bug
-      if (!Object.keys(props.data).length) {
-        defaultSchema = { type: 'object' };
+  const [contextVal] = useState<SchemaDescription>(new SchemaDescription());
+
+  useEffect(() => {
+    let defaultSchema;
+    if (props.data) {
+      if (typeof props.data === 'string') {
+        try {
+          defaultSchema = JSON.parse(props.data);
+        } catch (e) {
+          Message.error('传入的字符串非 json 格式!');
+        }
+      } else if (Object.prototype.toString.call(props.data) === '[object Object]') {
+        // fix: data 是空对象首行没有加号的bug
+        if (!Object.keys(props.data).length) {
+          defaultSchema = { type: 'object' };
+        } else {
+          defaultSchema = props.data;
+        }
       } else {
-        defaultSchema = props.data;
+        Message.error('json数据只支持字符串和对象');
       }
     } else {
-      Message.error('json数据只支持字符串和对象');
+      defaultSchema = { type: 'object' };
     }
-  }
-
-  const [contextVal] = useState<SchemaDescription>(new SchemaDescription(defaultSchema));
+    contextVal.changeSchema(defaultSchema);
+  }, [JSON.stringify(props.data)]);
 
   reaction(
     () => contextVal.schema,
