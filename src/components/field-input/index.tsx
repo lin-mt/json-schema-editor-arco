@@ -44,7 +44,7 @@ const FieldInput = (props: FieldInputProp): ReactElement => {
     ref.current.dom.addEventListener(
       'blur',
       _.debounce(() => {
-        if (ref.current.dom.value.length === 0) {
+        if (ref.current.dom.value?.length === 0) {
           Message.warning('FieldName can not empty.');
           ref.current.dom.focus();
         }
@@ -54,7 +54,6 @@ const FieldInput = (props: FieldInputProp): ReactElement => {
 
   return (
     <Input
-      autoFocus
       ref={ref}
       error={error}
       addAfter={props.addAfter}
