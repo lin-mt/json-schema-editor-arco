@@ -10,7 +10,7 @@ hero:
 features:
   - title: 高颜值
     emoji: 🌹
-    description: 基于Arco Design构建
+    description: 基于 Arco Design 构建
   - title: 可视化
     emoji: 🧐
     description: 可视化编辑 Json Schema
