@@ -55,12 +55,10 @@
     ]
   },
   "dependencies": {
-    "@arco-design/web-react": "^2.45.1",
-    "@monaco-editor/react": "^4.4.6",
-    "@types/lodash": "^4.14.191",
-    "lodash": "^4.17.21",
-    "mobx": "^6.8.0",
-    "mobx-react": "^7.6.0"
+    "@arco-design/web-react": "^2.64.1",
+    "@monaco-editor/react": "^4.6.0",
+    "@types/lodash": "^4.17.13",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

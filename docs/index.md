@@ -8,13 +8,10 @@ hero:
     - text: Github
       link: https://github.com/lin-mt/json-schema-editor-arco
 features:
-  - title: 高颜值
-    emoji: 🌹
+  - emoji: 🌹
     description: 基于 Arco Design 构建
-  - title: 可视化
-    emoji: 🧐
+  - emoji: 🧐
     description: 可视化编辑 Json Schema
-  - title: Mock
-    emoji: 🎭
-    description: 支持多种数据格式的 Mock
+  - emoji: 🚀
+    description: JSON Schema Draft 07 标准
 ---
