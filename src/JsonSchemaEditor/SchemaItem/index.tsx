@@ -845,7 +845,7 @@ function SchemaItem(props: SchemaItemProps) {
         </Row>
         <Row>
           <MonacoEditor
-            height={390}
+            height={399}
             language="json"
             handleEditorDidMount={handleEditorDidMount}
             onChange={(value) => setImportValue(value)}

@@ -1,5 +1,12 @@
 export type SchemaEditorProps = {
+  /**
+   * @description 初始化数据
+   * @default {"type": "object", "properties": {"field": {"type": "string"}}}
+   */
   data?: JSONSchema7 | undefined | string;
+  /**
+   * @description JsonSchema 变更的回调函数
+   */
   onSchemaChange?: (schema: JSONSchema7) => void;
 };
 
