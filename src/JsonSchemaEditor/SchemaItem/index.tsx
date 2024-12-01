@@ -160,14 +160,14 @@ function SchemaItem(props: SchemaItemProps) {
     <>
       <Row align={'center'} style={{ paddingBottom: 10 }}>
         <Col
-          flex={`${(nodeDepth + 1) * 24}px`}
+          flex={`${24 + nodeDepth * 15}px`}
           style={{ marginLeft: nodeDepth * 5 }}
         >
           <Row justify={'end'}>
             {schema.type === 'object' && (
               <Button
                 type={'text'}
-                size={'small'}
+                size={'mini'}
                 style={{ color: 'rgb(var(--color-text-2))' }}
                 icon={expand ? <IconCaretDown /> : <IconCaretRight />}
                 onClick={() => setExpand(!expand)}
@@ -261,12 +261,12 @@ function SchemaItem(props: SchemaItemProps) {
             onChange={(description) => setSchemaDescription(description)}
           />
         </Col>
-        <Col flex={'84px'} style={{ marginLeft: 5 }}>
-          <Row style={{ width: '84px' }}>
+        <Col flex={'72px'} style={{ marginLeft: 5 }}>
+          <Row style={{ width: '72px' }}>
             <Tooltip content={'高级设置'}>
               <Button
                 type={'text'}
-                size={'small'}
+                size={'mini'}
                 icon={<IconSettings />}
                 style={{ color: 'rgb(var(--green-6))' }}
                 onClick={() => {
@@ -308,7 +308,7 @@ function SchemaItem(props: SchemaItemProps) {
                 <Tooltip content={addChildNode ? undefined : '添加节点'}>
                   <Button
                     type={'text'}
-                    size={'small'}
+                    size={'mini'}
                     icon={<IconPlus />}
                     style={{ color: 'rgb(var(--primary-6))' }}
                     onClick={() => {
@@ -330,7 +330,7 @@ function SchemaItem(props: SchemaItemProps) {
                 <Tooltip content={'导入Json'}>
                   <Button
                     type={'text'}
-                    size={'small'}
+                    size={'mini'}
                     icon={<IconUpload />}
                     style={{ color: 'rgb(var(--purple-6))' }}
                     onClick={() => setImportModalVisible(true)}
@@ -341,7 +341,7 @@ function SchemaItem(props: SchemaItemProps) {
                   <Button
                     status={'danger'}
                     type={'text'}
-                    size={'small'}
+                    size={'mini'}
                     icon={<IconDelete />}
                     onClick={() => {
                       if (removeProperty) {
