@@ -22,6 +22,7 @@ import {
   IconSettings,
   IconUpload,
 } from '@arco-design/web-react/icon';
+import { Draft07 } from 'json-schema-library';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MonacoEditor from '../MonacoEditor';
@@ -32,7 +33,8 @@ import {
   StringFormat,
   getDefaultSchema,
   getPropertyIndex,
-  inferSchema,
+  parseJsonStr,
+  resolveJsonSchemaRef,
 } from '../utils';
 
 const Row = Grid.Row;
@@ -45,6 +47,7 @@ type SchemaItemProps = {
   parentSchemaDepth?: number;
   namePath?: number[];
   isArrayItems?: boolean;
+  isRequire?: boolean;
   schema: JSONSchema7;
   changeSchema?: (namePath: number[], value: any, propertyName: string) => void;
   renameProperty?: (namePath: number[], name: string) => void;
@@ -67,6 +70,7 @@ function SchemaItem(props: SchemaItemProps) {
     parentSchemaDepth = 0,
     removeProperty,
     addProperty,
+    isRequire,
   } = props;
 
   const [schema, setSchema] = useState(props.schema);
@@ -156,6 +160,10 @@ function SchemaItem(props: SchemaItemProps) {
     editorRef.current = editor;
   }
 
+  if (!schema.type) {
+    return <></>;
+  }
+
   return (
     <>
       <Row align={'center'} style={{ paddingBottom: 10 }}>
@@ -200,6 +208,7 @@ function SchemaItem(props: SchemaItemProps) {
         <Col flex={'16px'} style={{ marginLeft: 5 }}>
           <Checkbox
             disabled={isArrayItems || isRoot}
+            checked={isRequire}
             style={{ padding: 0 }}
             onChange={(checked) => {
               if (updateRequiredProperty && propertyName) {
@@ -275,7 +284,7 @@ function SchemaItem(props: SchemaItemProps) {
                 }}
               />
             </Tooltip>
-            {!isRoot || !isArrayItems || schema.type === 'object' ? (
+            {(!isRoot && !isArrayItems) || schema.type === 'object' ? (
               <Dropdown
                 position="bottom"
                 droplist={
@@ -371,6 +380,7 @@ function SchemaItem(props: SchemaItemProps) {
               <div key={String(name)}>
                 <SchemaItem
                   {...props}
+                  isRequire={schema.required?.includes(name)}
                   isArrayItems={false}
                   nodeDepth={nodeDepth + 1}
                   parentSchemaDepth={!isRoot ? parentSchemaDepth + 2 : 0}
@@ -389,6 +399,7 @@ function SchemaItem(props: SchemaItemProps) {
       {schema.type === 'array' && expand && (
         <SchemaItem
           {...props}
+          isRequire={false}
           isArrayItems={true}
           nodeDepth={nodeDepth + 1}
           parentSchemaDepth={!isRoot ? parentSchemaDepth + 1 : 0}
@@ -803,25 +814,23 @@ function SchemaItem(props: SchemaItemProps) {
         okText={'导入'}
         cancelText={'取消'}
         visible={importModalVisible}
-        onOk={() => {
+        onOk={async () => {
           if (!importValue || importValue.length === 0) {
             Message.warning('请输入导入的 Json 数据');
             return;
           }
-          let importJson;
-          try {
-            importJson = JSON.parse(importValue);
-          } catch (e) {
+          const importObject = parseJsonStr(importValue);
+          if (!importObject) {
             Message.error('导入的内容不是 Json 格式的数据');
             return;
           }
           let schema;
           switch (importType) {
             case 'json':
-              schema = inferSchema(importJson);
+              schema = new Draft07().createSchemaOf(importObject);
               break;
             case 'json-schema':
-              schema = importJson;
+              schema = await resolveJsonSchemaRef(importObject);
               break;
           }
           if (changeSchema) {
