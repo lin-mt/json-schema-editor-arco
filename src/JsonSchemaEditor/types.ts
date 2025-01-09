@@ -8,6 +8,17 @@ export type SchemaEditorProps = {
    * @description JsonSchema 变更的回调函数
    */
   onSchemaChange?: (schema: JSONSchema7) => void;
+  /**
+   * @description 点击高级设置的回调
+   * @param namePath 点击所在的 JsonSchema 所在的属性路径
+   * @param schema 点击的 JsonSchema
+   * @param propertyName 属性名称
+   */
+  handleAdvancedSettingClick?: (
+    namePath: number[],
+    schema: JSONSchema7,
+    propertyName?: string,
+  ) => boolean;
 };
 
 //==================================================================================================

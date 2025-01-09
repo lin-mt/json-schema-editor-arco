@@ -49,7 +49,11 @@ type SchemaItemProps = {
   isArrayItems?: boolean;
   isRequire?: boolean;
   schema: JSONSchema7;
-  changeSchema?: (namePath: number[], value: any, propertyName: string) => void;
+  changeSchema?: (
+    namePath: number[],
+    value: any,
+    propertyName?: string,
+  ) => void;
   renameProperty?: (namePath: number[], name: string) => void;
   removeProperty?: (namePath: number[]) => void;
   addProperty?: (path: number[], isChild: boolean) => void;
@@ -58,6 +62,11 @@ type SchemaItemProps = {
     requiredProperty: string,
     removed: boolean,
   ) => void;
+  handleAdvancedSettingClick?: (
+    namePath: number[],
+    schema: JSONSchema7,
+    propertyName?: string,
+  ) => boolean;
 };
 
 function SchemaItem(props: SchemaItemProps) {
@@ -71,6 +80,7 @@ function SchemaItem(props: SchemaItemProps) {
     removeProperty,
     addProperty,
     isRequire,
+    handleAdvancedSettingClick,
   } = props;
 
   const [schema, setSchema] = useState(props.schema);
@@ -279,6 +289,18 @@ function SchemaItem(props: SchemaItemProps) {
                 icon={<IconSettings />}
                 style={{ color: 'rgb(var(--green-6))' }}
                 onClick={() => {
+                  if (
+                    handleAdvancedSettingClick &&
+                    !handleAdvancedSettingClick(
+                      namePath,
+                      schema,
+                      isRoot || schema.type === 'object'
+                        ? undefined
+                        : propertyName,
+                    )
+                  ) {
+                    return;
+                  }
                   setFormSchema(schema);
                   setAdvancedModal(!advancedModal);
                 }}
@@ -390,6 +412,7 @@ function SchemaItem(props: SchemaItemProps) {
                   )}
                   propertyName={name}
                   schema={schema.properties[name] as JSONSchema7}
+                  handleAdvancedSettingClick={handleAdvancedSettingClick}
                 />
               </div>
             );
@@ -406,6 +429,7 @@ function SchemaItem(props: SchemaItemProps) {
           propertyName={'items'}
           namePath={namePath.concat(getPropertyIndex(schema, 'items'))}
           schema={schema.items as JSONSchema7}
+          handleAdvancedSettingClick={handleAdvancedSettingClick}
         />
       )}
       <Modal
@@ -419,7 +443,7 @@ function SchemaItem(props: SchemaItemProps) {
             return;
           }
           if (isRoot || schema.type === 'object') {
-            changeSchema(namePath, { ...schema, ...formSchema }, 'root');
+            changeSchema(namePath, { ...schema, ...formSchema });
             setAdvancedModal(!advancedModal);
             return;
           }
@@ -427,7 +451,7 @@ function SchemaItem(props: SchemaItemProps) {
             await advancedForm.validate();
             changeSchema(
               namePath,
-              { ...schema, ...advancedForm.getFieldsValue() },
+              { ...schema, ...formSchema, ...advancedForm.getFieldsValue() },
               propertyName,
             );
             setAdvancedModal(!advancedModal);
@@ -834,7 +858,7 @@ function SchemaItem(props: SchemaItemProps) {
               break;
           }
           if (changeSchema) {
-            changeSchema([], schema, 'root');
+            changeSchema([], schema);
             setImportModalVisible(!importModalVisible);
             setImportValue(undefined);
           }
