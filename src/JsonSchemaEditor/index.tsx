@@ -127,6 +127,13 @@ const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
         parent[lastKey] = Object.fromEntries(
           Object.entries(current).map(([key, value]) => {
             if (key === oldKey) {
+              const parentRequired = parent['required'];
+              if (parentRequired) {
+                const requiredIndex = parentRequired.indexOf(oldKey);
+                if (requiredIndex >= 0) {
+                  parentRequired.splice(requiredIndex, 1, newKey);
+                }
+              }
               return [newKey, value];
             }
             return [key, value];
