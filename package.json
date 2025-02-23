@@ -59,6 +59,7 @@
     "@arco-design/web-react": "^2.64.1",
     "@monaco-editor/react": "^4.6.0",
     "@types/lodash": "^4.17.13",
+    "ajv": "^8.17.1",
     "json-schema-library": "^10.0.0-rc6",
     "lodash": "^4.17.21"
   },
