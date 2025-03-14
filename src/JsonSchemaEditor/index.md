@@ -10,7 +10,7 @@ yarn add @quiet-front-end/json-schema-editor-arco
 ```jsx
 import { JsonSchemaEditor } from '@quiet-front-end/json-schema-editor-arco';
 
-export default () => <JsonSchemaEditor />;
+export default () => <JsonSchemaEditor defaultExpand={false} />;
 ```
 
 ## Notice

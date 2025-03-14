@@ -39,6 +39,7 @@ type SchemaItemProps = {
   isArrayItems?: boolean;
   isRequire?: boolean;
   schema: JSONSchema7;
+  defaultExpand?: boolean; // 树结构默认展开/收敛
   changeSchema?: (
     namePath: number[],
     value: any,
@@ -70,6 +71,7 @@ function SchemaItem(props: SchemaItemProps) {
     addProperty,
     isRequire,
     handleAdvancedSettingClick,
+    defaultExpand = true, // JSON Schema 树结构默认展开/收敛
   } = props;
 
   const [schema, setSchema] = useState(props.schema);
@@ -84,7 +86,7 @@ function SchemaItem(props: SchemaItemProps) {
   const [namePath, setNamePath] = useState<number[]>(
     props.namePath ? props.namePath : [],
   );
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(defaultExpand); //展开或者收敛
   const [advancedModal, setAdvancedModal] = useState(false);
   const [importModalVisible, setImportModalVisible] = useState(false);
   const isRoot = typeof propertyName === 'undefined';
@@ -342,6 +344,7 @@ function SchemaItem(props: SchemaItemProps) {
                   {...props}
                   isRequire={schema.required?.includes(name)}
                   isArrayItems={false}
+                  defaultExpand={props.defaultExpand}
                   nodeDepth={nodeDepth + 1}
                   parentSchemaDepth={!isRoot ? parentSchemaDepth + 2 : 0}
                   namePath={namePath.concat(
@@ -363,6 +366,7 @@ function SchemaItem(props: SchemaItemProps) {
           isRequire={false}
           isArrayItems={true}
           nodeDepth={nodeDepth + 1}
+          defaultExpand={props.defaultExpand}
           parentSchemaDepth={!isRoot ? parentSchemaDepth + 1 : 0}
           propertyName={'items'}
           namePath={namePath.concat(getPropertyIndex(schema, 'items'))}
