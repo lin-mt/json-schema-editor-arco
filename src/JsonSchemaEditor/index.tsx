@@ -7,6 +7,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
+import { defaultSchemaMock } from './defaultMock';
 import SchemaItem from './SchemaItem';
 import { JSONSchema7, SchemaEditorProps } from './types';
 import { getDefaultSchema, inferSchema } from './utils';
@@ -18,12 +19,7 @@ export interface JsonSchemaEditorHandle {
 const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
   (props, ref) => {
     function initSchema(data: string | undefined | JSONSchema7): JSONSchema7 {
-      const defaultSchema: JSONSchema7 = {
-        type: 'object',
-        properties: {
-          field: { type: 'string' },
-        },
-      };
+      const defaultSchema: JSONSchema7 = defaultSchemaMock as JSONSchema7;
       if (!data) {
         return defaultSchema;
       }
@@ -237,6 +233,7 @@ const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
       <div style={{ paddingTop: '10px 10px 0 10px' }}>
         <SchemaItem
           schema={schema}
+          defaultExpand={props.defaultExpand}
           changeSchema={changeSchema}
           renameProperty={renameProperty}
           removeProperty={removeProperty}

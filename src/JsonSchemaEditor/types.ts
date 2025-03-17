@@ -4,6 +4,12 @@ export type SchemaEditorProps = {
    * @default {"type": "object", "properties": {"field": {"type": "string"}}}
    */
   data?: JSONSchema7 | undefined | string;
+
+  /**
+   * @description JSONSchema 右侧树结构默认展现方式  true-展开  false-收起   默认为true
+   */
+  defaultExpand: boolean | undefined;
+
   /**
    * @description JsonSchema 变更的回调函数
    */
