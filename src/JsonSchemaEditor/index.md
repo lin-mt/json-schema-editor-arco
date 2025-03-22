@@ -10,7 +10,7 @@ yarn add @quiet-front-end/json-schema-editor-arco
 ```jsx
 import { JsonSchemaEditor } from '@quiet-front-end/json-schema-editor-arco';
 
-export default () => <JsonSchemaEditor defaultExpand={false} />;
+export default () => <JsonSchemaEditor />;
 ```
 
 ## Notice
@@ -58,6 +58,14 @@ JsonSchema 变更的回调。
   }
 }
 ```
+
+### defaultExpand
+
+默认是否展开节点。
+
+类型：`boolean`
+
+默认值：`true`
 
 ### handleAdvancedSettingClick
 

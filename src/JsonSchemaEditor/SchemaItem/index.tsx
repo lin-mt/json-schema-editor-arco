@@ -34,7 +34,6 @@ const Option = Select.Option;
 type SchemaItemProps = {
   propertyName?: string;
   nodeDepth?: number;
-  parentSchemaDepth?: number;
   namePath?: number[];
   isArrayItems?: boolean;
   isRequire?: boolean;
@@ -48,11 +47,7 @@ type SchemaItemProps = {
   renameProperty?: (namePath: number[], name: string) => void;
   removeProperty?: (namePath: number[]) => void;
   addProperty?: (path: number[], isChild: boolean) => void;
-  updateRequiredProperty?: (
-    path: number[],
-    requiredProperty: string,
-    removed: boolean,
-  ) => void;
+  updateRequiredProperty?: (namePath: number[], removed: boolean) => void;
   handleAdvancedSettingClick?: (
     namePath: number[],
     schema: JSONSchema7,
@@ -66,7 +61,6 @@ function SchemaItem(props: SchemaItemProps) {
     renameProperty,
     isArrayItems,
     updateRequiredProperty,
-    parentSchemaDepth = 0,
     removeProperty,
     addProperty,
     isRequire,
@@ -165,11 +159,7 @@ function SchemaItem(props: SchemaItemProps) {
             style={{ padding: 0 }}
             onChange={(checked) => {
               if (updateRequiredProperty && propertyName) {
-                updateRequiredProperty(
-                  namePath.slice(0, parentSchemaDepth),
-                  propertyName,
-                  !checked,
-                );
+                updateRequiredProperty(namePath, !checked);
               }
             }}
           />
@@ -344,9 +334,8 @@ function SchemaItem(props: SchemaItemProps) {
                   {...props}
                   isRequire={schema.required?.includes(name)}
                   isArrayItems={false}
-                  defaultExpand={props.defaultExpand}
+                  defaultExpand={defaultExpand}
                   nodeDepth={nodeDepth + 1}
-                  parentSchemaDepth={!isRoot ? parentSchemaDepth + 2 : 0}
                   namePath={namePath.concat(
                     getPropertyIndex(schema, 'properties'),
                     getPropertyIndex(schema.properties, name),
@@ -366,8 +355,7 @@ function SchemaItem(props: SchemaItemProps) {
           isRequire={false}
           isArrayItems={true}
           nodeDepth={nodeDepth + 1}
-          defaultExpand={props.defaultExpand}
-          parentSchemaDepth={!isRoot ? parentSchemaDepth + 1 : 0}
+          defaultExpand={defaultExpand}
           propertyName={'items'}
           namePath={namePath.concat(getPropertyIndex(schema, 'items'))}
           schema={schema.items as JSONSchema7}
