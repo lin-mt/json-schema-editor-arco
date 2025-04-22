@@ -10,13 +10,10 @@ import {
   Switch,
 } from '@arco-design/web-react';
 import { IconDelete, IconPlus } from '@arco-design/web-react/icon';
-import MonacoEditor from '@quiet-front-end/json-schema-editor-arco/JsonSchemaEditor/MonacoEditor';
-import {
-  SchemaTypes,
-  StringFormat,
-} from '@quiet-front-end/json-schema-editor-arco/JsonSchemaEditor/utils';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import MonacoEditor from '../MonacoEditor';
+import { SchemaTypes, StringFormat } from '../utils';
 
 const Row = Grid.Row;
 const Col = Grid.Col;
@@ -41,6 +38,7 @@ export default (props: AdvancedSettingModalProps) => {
   const [isInteger, setIsInteger] = useState(false);
   const [isString, setIsString] = useState(false);
   const editorRef = useRef<any>(null);
+  const isFormUpdateRef = useRef(false);
 
   useEffect(() => {
     setFormSchema(schema);
@@ -50,31 +48,27 @@ export default (props: AdvancedSettingModalProps) => {
     setAdvancedModal(visible);
   }, [visible]);
 
-  const handleDebounce = useCallback(
-    _.debounce(
-      (callback) => {
-        if (typeof callback === 'function') {
-          callback();
-        } else {
-          console.log('Provided argument is not a function');
-        }
-      },
-      300,
-      { maxWait: 1000 },
-    ),
-    [],
+  // 使用useRef稳定防抖函数
+  const debounceFn = useRef(
+    _.debounce((value: string) => {
+      try {
+        const editorSchema = JSON.parse(value);
+        setFormSchema(editorSchema);
+      } catch (e) {
+        console.error('JSON解析失败', e);
+      }
+    }, 300),
   );
 
+  // 组件卸载时取消防抖
   useEffect(() => {
     return () => {
-      handleDebounce.cancel();
+      debounceFn.current.cancel();
     };
-  }, [handleDebounce]);
+  }, []);
 
   useEffect(() => {
-    if (!formSchema) {
-      return;
-    }
+    if (!formSchema) return;
     advancedForm.setFieldsValue(formSchema);
     setIsObject(formSchema.type === 'object');
     setIsArray(formSchema.type === 'array');
@@ -90,9 +84,7 @@ export default (props: AdvancedSettingModalProps) => {
   }
 
   function onClose() {
-    if (onCancel) {
-      onCancel();
-    }
+    onCancel?.();
     setAdvancedModal(false);
   }
 
@@ -106,11 +98,8 @@ export default (props: AdvancedSettingModalProps) => {
       onOk={async () => {
         try {
           await advancedForm.validate();
-          if (onOk) {
-            onOk({ ...formSchema, ...advancedForm.getFieldsValue() });
-          }
+          onOk?.({ ...formSchema, ...advancedForm.getFieldsValue() });
         } catch (e) {
-          console.log(advancedForm.getFieldsError());
           Message.error('字段校验失败，请检查字段！');
         }
       }}
@@ -119,11 +108,25 @@ export default (props: AdvancedSettingModalProps) => {
       <Form
         form={advancedForm}
         onValuesChange={(_, allValues) => {
-          if (editorRef.current) {
-            editorRef.current.setValue(
-              JSON.stringify({ ...formSchema, ...allValues }, null, 2),
-            );
+          if (!editorRef.current) return;
+
+          // 标记为表单触发的更新
+          isFormUpdateRef.current = true;
+
+          // 生成新的JSON并比较当前编辑器内容
+          const newSchema = { ...formSchema, ...allValues };
+          const newValue = JSON.stringify(newSchema, null, 2);
+          const currentValue = editorRef.current.getValue();
+
+          // 避免不必要的更新
+          if (currentValue !== newValue) {
+            editorRef.current.setValue(newValue);
           }
+
+          // 延迟重置标志位
+          setTimeout(() => {
+            isFormUpdateRef.current = false;
+          }, 0);
         }}
       >
         {!isObject && SchemaTypes.indexOf(formSchema?.type) !== -1 && (
@@ -461,14 +464,8 @@ export default (props: AdvancedSettingModalProps) => {
           value={JSON.stringify(formSchema, null, 2)}
           handleEditorDidMount={handleEditorDidMount}
           onChange={(value) => {
-            handleDebounce(() => {
-              if (value) {
-                try {
-                  const editorSchema = JSON.parse(value);
-                  setFormSchema(editorSchema);
-                } catch (e) {}
-              }
-            });
+            if (isFormUpdateRef.current || !value) return;
+            debounceFn.current(value);
           }}
         />
       </Form>
