@@ -7,6 +7,7 @@ import {
 import Ajv from 'ajv';
 import { Draft07 } from 'json-schema-library';
 import React, { useEffect, useRef, useState } from 'react';
+import { useI18n } from '../i18n';
 
 const Row = Grid.Row;
 
@@ -18,7 +19,7 @@ type ImportModalProps = {
 
 const ImportModal = (props: ImportModalProps) => {
   const { open, onOk, onCancel } = props;
-
+  const { t } = useI18n();
   const [importModalVisible, setImportModalVisible] = useState(false);
   const [importType, setImportType] = useState<'json' | 'json-schema'>('json');
   const [importValue, setImportValue] = useState<string | undefined>();
@@ -44,19 +45,17 @@ const ImportModal = (props: ImportModalProps) => {
 
   return (
     <Modal
-      title="导入"
+      title={t('Import')}
       style={{ width: 900 }}
-      okText={'导入'}
-      cancelText={'取消'}
       visible={importModalVisible}
       onOk={async () => {
         if (!importValue || importValue.length === 0) {
-          Message.warning('请输入导入的 Json 数据');
+          Message.warning(t('ImportEmptyJsonWarnMsg'));
           return;
         }
         const importObject = parseJsonStr(importValue);
         if (!importObject) {
-          Message.error('导入的内容不是 Json 格式的数据');
+          Message.error(t('ImportNotJsonWarnMsg'));
           return;
         }
         let schema;
@@ -69,7 +68,7 @@ const ImportModal = (props: ImportModalProps) => {
             break;
         }
         if (!schema) {
-          Message.warning('导入的内容有误，请检查后重新导入');
+          Message.warning(t('ImportErrorContentWarnMsg'));
           return;
         } else {
           const ajv = new Ajv({ allErrors: true });

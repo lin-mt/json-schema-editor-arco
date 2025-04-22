@@ -17,8 +17,9 @@ import {
   IconSettings,
   IconUpload,
 } from '@arco-design/web-react/icon';
-import ImportModal from '@quiet-front-end/json-schema-editor-arco/JsonSchemaEditor/SchemaItem/ImportModal';
 import React, { useEffect, useState } from 'react';
+import { useI18n } from '../i18n';
+import ImportModal from '../SchemaItem/ImportModal';
 import { JSONSchema7 } from '../types';
 import {
   SchemaTypeOptions,
@@ -72,6 +73,7 @@ function SchemaItem(props: SchemaItemProps) {
     handleAdvancedSettingClick,
   } = props;
 
+  const { t } = useI18n();
   const [schema, setSchema] = useState(props.schema);
   const [propertyName, setPropertyName] = useState(props.propertyName);
   const [schemaTitle, setSchemaTitle] = useState(schema.title);
@@ -139,10 +141,10 @@ function SchemaItem(props: SchemaItemProps) {
             status={!isRoot && propertyName.length === 0 ? 'error' : undefined}
             disabled={isRoot || isArrayItems}
             value={isRoot ? 'root' : propertyName}
-            placeholder={'属性名称'}
+            placeholder={t('PropertyPlaceholder')}
             onBlur={() => {
               if (propertyName?.length === 0) {
-                Message.error('属性名称不能为空');
+                Message.error(t('PropertyNameEmptyWarnMsg'));
                 return;
               }
               if (
@@ -157,20 +159,22 @@ function SchemaItem(props: SchemaItemProps) {
           />
         </Col>
         <Col flex={'16px'} style={{ marginLeft: 5 }}>
-          <Checkbox
-            disabled={isArrayItems || isRoot}
-            checked={isRequire}
-            style={{ padding: 0 }}
-            onChange={(checked) => {
-              if (updateRequiredProperty && propertyName) {
-                updateRequiredProperty(
-                  namePath.slice(0, parentSchemaDepth),
-                  propertyName,
-                  !checked,
-                );
-              }
-            }}
-          />
+          <Tooltip content={t('IsRequired')}>
+            <Checkbox
+              disabled={isArrayItems || isRoot}
+              checked={isRequire}
+              style={{ padding: 0 }}
+              onChange={(checked) => {
+                if (updateRequiredProperty && propertyName) {
+                  updateRequiredProperty(
+                    namePath.slice(0, parentSchemaDepth),
+                    propertyName,
+                    !checked,
+                  );
+                }
+              }}
+            />
+          </Tooltip>
         </Col>
         <Col flex={'98px'} style={{ marginLeft: 5 }}>
           <Select
@@ -191,7 +195,7 @@ function SchemaItem(props: SchemaItemProps) {
         </Col>
         <Col flex={'auto'} style={{ marginLeft: 5 }}>
           <Input
-            placeholder={'标题'}
+            placeholder={t('TitlePlaceholder')}
             value={schemaTitle}
             onBlur={() => {
               if (changeSchema) {
@@ -207,7 +211,7 @@ function SchemaItem(props: SchemaItemProps) {
         </Col>
         <Col flex={'auto'} style={{ marginLeft: 5 }}>
           <Input
-            placeholder={'描述'}
+            placeholder={t('DescriptionPlaceholder')}
             value={schemaDescription}
             onBlur={() => {
               if (changeSchema) {
@@ -223,7 +227,7 @@ function SchemaItem(props: SchemaItemProps) {
         </Col>
         <Col flex={'72px'} style={{ marginLeft: 5 }}>
           <Row style={{ width: '72px' }}>
-            <Tooltip content={'高级设置'}>
+            <Tooltip content={t('AdvancedSettings')}>
               <Button
                 type={'text'}
                 size={'mini'}
@@ -260,7 +264,7 @@ function SchemaItem(props: SchemaItemProps) {
                           }
                         }}
                       >
-                        同级节点
+                        {t('SiblingNodes')}
                       </Menu.Item>
                       <Menu.Item
                         key={'addChildNode'}
@@ -270,13 +274,13 @@ function SchemaItem(props: SchemaItemProps) {
                           }
                         }}
                       >
-                        子级节点
+                        {t('ChildNodes')}
                       </Menu.Item>
                     </Menu>
                   )
                 }
               >
-                <Tooltip content={addChildNode ? undefined : '添加节点'}>
+                <Tooltip content={addChildNode ? undefined : t('AddNode')}>
                   <Button
                     type={'text'}
                     size={'mini'}
@@ -298,7 +302,7 @@ function SchemaItem(props: SchemaItemProps) {
             )}
             <Col flex={'24px'}>
               {isRoot ? (
-                <Tooltip content={'导入Json'}>
+                <Tooltip content={t('ImportJson')}>
                   <Button
                     type={'text'}
                     size={'mini'}
@@ -308,7 +312,7 @@ function SchemaItem(props: SchemaItemProps) {
                   />
                 </Tooltip>
               ) : !isArrayItems ? (
-                <Tooltip content={'删除节点'}>
+                <Tooltip content={t('DeleteNode')}>
                   <Button
                     status={'danger'}
                     type={'text'}
