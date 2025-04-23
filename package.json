@@ -1,6 +1,6 @@
 {
   "name": "@quiet-front-end/json-schema-editor-arco",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Json Schema 编辑器",
   "keywords": [
     "json",
