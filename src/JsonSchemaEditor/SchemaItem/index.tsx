@@ -35,11 +35,11 @@ const Option = Select.Option;
 type SchemaItemProps = {
   propertyName?: string;
   nodeDepth?: number;
-  parentSchemaDepth?: number;
   namePath?: number[];
   isArrayItems?: boolean;
   isRequire?: boolean;
   schema: JSONSchema7;
+  defaultExpand?: boolean; // 树结构默认展开/收敛
   changeSchema?: (
     namePath: number[],
     value: any,
@@ -48,11 +48,7 @@ type SchemaItemProps = {
   renameProperty?: (namePath: number[], name: string) => void;
   removeProperty?: (namePath: number[]) => void;
   addProperty?: (path: number[], isChild: boolean) => void;
-  updateRequiredProperty?: (
-    path: number[],
-    requiredProperty: string,
-    removed: boolean,
-  ) => void;
+  updateRequiredProperty?: (namePath: number[], removed: boolean) => void;
   handleAdvancedSettingClick?: (
     namePath: number[],
     schema: JSONSchema7,
@@ -66,11 +62,11 @@ function SchemaItem(props: SchemaItemProps) {
     renameProperty,
     isArrayItems,
     updateRequiredProperty,
-    parentSchemaDepth = 0,
     removeProperty,
     addProperty,
     isRequire,
     handleAdvancedSettingClick,
+    defaultExpand = true, // JSON Schema 树结构默认展开/收敛
   } = props;
 
   const { t } = useI18n();
@@ -86,7 +82,7 @@ function SchemaItem(props: SchemaItemProps) {
   const [namePath, setNamePath] = useState<number[]>(
     props.namePath ? props.namePath : [],
   );
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(defaultExpand); //展开或者收敛
   const [advancedModal, setAdvancedModal] = useState(false);
   const [importModalVisible, setImportModalVisible] = useState(false);
   const isRoot = typeof propertyName === 'undefined';
@@ -166,11 +162,7 @@ function SchemaItem(props: SchemaItemProps) {
               style={{ padding: 0 }}
               onChange={(checked) => {
                 if (updateRequiredProperty && propertyName) {
-                  updateRequiredProperty(
-                    namePath.slice(0, parentSchemaDepth),
-                    propertyName,
-                    !checked,
-                  );
+                  updateRequiredProperty(namePath, !checked);
                 }
               }}
             />
@@ -346,8 +338,8 @@ function SchemaItem(props: SchemaItemProps) {
                   {...props}
                   isRequire={schema.required?.includes(name)}
                   isArrayItems={false}
+                  defaultExpand={defaultExpand}
                   nodeDepth={nodeDepth + 1}
-                  parentSchemaDepth={!isRoot ? parentSchemaDepth + 2 : 0}
                   namePath={namePath.concat(
                     getPropertyIndex(schema, 'properties'),
                     getPropertyIndex(schema.properties, name),
@@ -367,7 +359,7 @@ function SchemaItem(props: SchemaItemProps) {
           isRequire={false}
           isArrayItems={true}
           nodeDepth={nodeDepth + 1}
-          parentSchemaDepth={!isRoot ? parentSchemaDepth + 1 : 0}
+          defaultExpand={defaultExpand}
           propertyName={'items'}
           namePath={namePath.concat(getPropertyIndex(schema, 'items'))}
           schema={schema.items as JSONSchema7}

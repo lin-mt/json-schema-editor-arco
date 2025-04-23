@@ -59,6 +59,14 @@ JsonSchema 变更的回调。
 }
 ```
 
+### defaultExpand
+
+默认是否展开节点。
+
+类型：`boolean`
+
+默认值：`true`
+
 ### handleAdvancedSettingClick
 
 点击`高级设置`按钮的回调，返回`false`：不使用默认表单，返回`true`：使用默认表单。

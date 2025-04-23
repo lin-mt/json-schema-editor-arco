@@ -22,7 +22,6 @@ export default () => {
   const [jsonData, setJsonData] = useState({});
   return (
     <JsonSchemaEditor
-      mock={true}
       data={jsonData}
       onChange={(data) => {
         setJsonData(data);

@@ -3,6 +3,22 @@ import { JsonSchema } from 'json-schema-library';
 import _ from 'lodash';
 import { JSONSchema7Definition, JSONSchema7TypeName } from './types';
 
+export function getValueByPath(obj: any, path: number[]): any {
+  if (path.length === 0) {
+    return obj;
+  }
+  let current = obj;
+  for (let i = 0; i < path.length; i++) {
+    const key = Object.keys(current)[path[i]];
+    if (key === undefined) {
+      return undefined;
+    } else {
+      current = current[key];
+    }
+  }
+  return current;
+}
+
 // 解析 JSON Schema 中的 $ref
 function resolveRef(schema: JsonSchema, rootSchema: JsonSchema): JsonSchema {
   if (schema.$ref) {
