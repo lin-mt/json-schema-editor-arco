@@ -8,7 +8,7 @@ export default defineConfig({
   base: '/json-schema-editor-arco/',
   publicPath: '/json-schema-editor-arco/',
   themeConfig: {
-    name: 'Quiet',
+    name: 'Flode',
     socialLinks: {
       github: 'https://github.com/lin-mt/json-schema-editor-arco',
     },

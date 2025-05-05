@@ -1,6 +1,6 @@
 {
-  "name": "@quiet-front-end/json-schema-editor-arco",
-  "version": "1.0.6",
+  "name": "@flodejs/json-schema-editor-arco",
+  "version": "1.0.0",
   "description": "Json Schema 编辑器",
   "keywords": [
     "json",
@@ -60,7 +60,7 @@
     "@monaco-editor/react": "^4.6.0",
     "@types/lodash": "^4.17.13",
     "ajv": "^8.17.1",
-    "json-schema-library": "^10.0.0-rc6",
+    "json-schema-library": "^10.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

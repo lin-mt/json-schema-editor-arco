@@ -8,8 +8,8 @@
     "baseUrl": "./",
     "paths": {
       "@@/*": [".dumi/tmp/*"],
-      "@quiet-front-end/json-schema-editor-arco": ["src"],
-      "@quiet-front-end/json-schema-editor-arco/*": ["src/*", "*"]
+      "@flodejs/json-schema-editor-arco": ["src"],
+      "@flodejs/json-schema-editor-arco/*": ["src/*", "*"]
     }
   },
   "include": [".dumirc.ts", "src/**/*"]

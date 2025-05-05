@@ -113,7 +113,7 @@ export const registerLocale = (lang: Lang, messages: LocaleMessages) => {
 
 export const useI18n = () => {
   const config = useContext(ConfigProvider.ConfigContext);
-  const currentLang: Lang = config?.locale?.locale || 'en-US';
+  const currentLang: Lang = config?.locale?.locale || 'zh-CN';
 
   const messages = {
     ...defaultMessages[currentLang],

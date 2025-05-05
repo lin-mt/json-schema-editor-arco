@@ -4,11 +4,11 @@
 - 需要与 [json-schema-editor-visual](https://github.com/Open-Federation/json-schema-editor-visual) UI 布局类似的组件，可以使用 `0.x.x` 版本。
 
 ```shell
-yarn add @quiet-front-end/json-schema-editor-arco
+yarn add @flodejs/json-schema-editor-arco
 ```
 
 ```jsx
-import { JsonSchemaEditor } from '@quiet-front-end/json-schema-editor-arco';
+import { JsonSchemaEditor } from '@flodejs/json-schema-editor-arco';
 
 export default () => <JsonSchemaEditor />;
 ```

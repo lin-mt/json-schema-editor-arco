@@ -2,7 +2,7 @@ import Editor, { OnChange } from '@monaco-editor/react';
 import React, { ReactElement } from 'react';
 import { xcodeDefault } from './themes';
 
-interface QuietEditorProp {
+interface MonacoEditorProp {
   width?: string | number;
   height?: string | number;
   value?: string;
@@ -15,7 +15,7 @@ interface QuietEditorProp {
   handleEditorDidMount?: (editor: any, monaco: any) => void;
 }
 
-const MonacoEditor = (props: QuietEditorProp): ReactElement => {
+const MonacoEditor = (props: MonacoEditorProp): ReactElement => {
   const {
     width,
     lineNumbers = 'on',

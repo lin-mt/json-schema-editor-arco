@@ -1,7 +1,7 @@
 # json-schema-editor-arco
 
-[![NPM version](https://img.shields.io/npm/v/@quiet-front-end/json-schema-editor-arco.svg?style=flat)](https://npmjs.org/package/@quiet-front-end/json-schema-editor-arco)
-[![NPM downloads](http://img.shields.io/npm/dm/@quiet-front-end/json-schema-editor-arco.svg?style=flat)](https://npmjs.org/package/@quiet-front-end/json-schema-editor-arco)
+[![NPM version](https://img.shields.io/npm/v/@flodejs/json-schema-editor-arco.svg?style=flat)](https://npmjs.org/package/@flodejs/json-schema-editor-arco)
+[![NPM downloads](http://img.shields.io/npm/dm/@flodejs/json-schema-editor-arco.svg?style=flat)](https://npmjs.org/package/@flodejs/json-schema-editor-arco)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 [Antd Design](https://ant.design/) 风格 https://github.com/lin-mt/json-schema-editor-antd
@@ -11,12 +11,12 @@
 ## Usage
 
 ```shell
-npm install @quiet-front-end/json-schema-editor-arco
+npm install @flodejs/json-schema-editor-arco
 ```
 
 ```jsx
 import { useState } from 'react';
-import JsonSchemaEditor from '@quiet-front-end/json-schema-editor-arco';
+import JsonSchemaEditor from '@flodejs/json-schema-editor-arco';
 
 export default () => {
   const [jsonData, setJsonData] = useState({});

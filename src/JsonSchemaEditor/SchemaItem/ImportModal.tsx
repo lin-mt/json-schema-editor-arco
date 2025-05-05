@@ -1,11 +1,11 @@
 import { Grid, Message, Modal, Radio } from '@arco-design/web-react';
-import MonacoEditor from '@quiet-front-end/json-schema-editor-arco/JsonSchemaEditor/MonacoEditor';
+import MonacoEditor from '@flodejs/json-schema-editor-arco/JsonSchemaEditor/MonacoEditor';
 import {
   parseJsonStr,
   resolveJsonSchemaRef,
-} from '@quiet-front-end/json-schema-editor-arco/JsonSchemaEditor/utils';
+} from '@flodejs/json-schema-editor-arco/JsonSchemaEditor/utils';
 import Ajv from 'ajv';
-import { Draft07 } from 'json-schema-library';
+import { compileSchema, draft2020 } from 'json-schema-library';
 import React, { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../i18n';
 
@@ -61,7 +61,7 @@ const ImportModal = (props: ImportModalProps) => {
         let schema;
         switch (importType) {
           case 'json':
-            schema = new Draft07().createSchemaOf(importObject);
+            schema = compileSchema(draft2020).createSchema(importObject);
             break;
           case 'json-schema':
             schema = await resolveJsonSchemaRef(importObject);
