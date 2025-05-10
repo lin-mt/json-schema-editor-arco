@@ -19,12 +19,12 @@ import { useState } from 'react';
 import JsonSchemaEditor from '@flodejs/json-schema-editor-arco';
 
 export default () => {
-  const [jsonData, setJsonData] = useState({});
+  const [jsonSchema, setJsonSchema] = useState();
   return (
     <JsonSchemaEditor
-      data={jsonData}
-      onChange={(data) => {
-        setJsonData(data);
+      value={jsonSchema}
+      onChange={(schema) => {
+        setJsonSchema(schema);
       }}
     />
   );

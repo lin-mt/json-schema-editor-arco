@@ -67,6 +67,18 @@ JsonSchema 变更的回调。
 
 默认值：`true`
 
+### 国际化
+
+支持 arco 的国际化。
+
+```ts
+// 支持扩展或覆盖默认语言配置
+registerLocale('zh-cn', {
+  PropertyPlaceholder: '请输入属性名称',
+  // ...
+});
+```
+
 ### handleAdvancedSettingClick
 
 点击`高级设置`按钮的回调，返回`false`：不使用默认表单，返回`true`：使用默认表单。
