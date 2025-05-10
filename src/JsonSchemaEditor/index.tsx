@@ -1,4 +1,4 @@
-import { Message } from '@arco-design/web-react';
+import { Empty, Message } from '@arco-design/web-react';
 import '@arco-design/web-react/dist/css/arco.css';
 import _ from 'lodash';
 import React, {
@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { defaultSchemaMock } from './defaultMock';
 import SchemaItem from './SchemaItem';
-import { JSONSchema7, SchemaEditorProps } from './types';
+import { JSONSchema, SchemaEditorProps } from './types';
 import { getDefaultSchema, getValueByPath, inferSchema } from './utils';
 
 export interface JsonSchemaEditorHandle {
@@ -18,8 +18,8 @@ export interface JsonSchemaEditorHandle {
 
 const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
   (props, ref) => {
-    function initSchema(data: string | undefined | JSONSchema7): JSONSchema7 {
-      const defaultSchema: JSONSchema7 = defaultSchemaMock as JSONSchema7;
+    function initSchema(data: string | undefined | JSONSchema): JSONSchema {
+      const defaultSchema: JSONSchema = defaultSchemaMock as JSONSchema;
       if (!data) {
         return defaultSchema;
       }
@@ -36,7 +36,7 @@ const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
       }
     }
 
-    // const [schema, setSchema] = useState<JSONSchema7>({
+    // const [schema, setSchema] = useState<JSONSchema>({
     //   type: 'object', properties: {
     //     'objectP': {type: 'object', properties: {'o1numberP': {type: 'number'}}},
     //     'numberP': {type: 'number'},
@@ -48,7 +48,7 @@ const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
     //   }
     // })
 
-    const [schema, setSchema] = useState<JSONSchema7>(initSchema(props.data));
+    const [schema, setSchema] = useState<JSONSchema>(initSchema(props.value));
     const [fieldCount, setFieldCount] = useState(0);
 
     useEffect(() => {
@@ -238,17 +238,21 @@ const JsonSchemaEditor = forwardRef<JsonSchemaEditorHandle, SchemaEditorProps>(
     useImperativeHandle(ref, () => ({ changeSchema }));
 
     return (
-      <div style={{ paddingTop: '10px 10px 0 10px' }}>
-        <SchemaItem
-          schema={schema}
-          defaultExpand={props.defaultExpand}
-          changeSchema={changeSchema}
-          renameProperty={renameProperty}
-          removeProperty={removeProperty}
-          addProperty={addProperty}
-          updateRequiredProperty={updateRequiredProperty}
-          handleAdvancedSettingClick={props.handleAdvancedSettingClick}
-        />
+      <div style={props.style}>
+        {schema ? (
+          <SchemaItem
+            schema={schema}
+            defaultExpand={props.defaultExpand}
+            changeSchema={changeSchema}
+            renameProperty={renameProperty}
+            removeProperty={removeProperty}
+            addProperty={addProperty}
+            updateRequiredProperty={updateRequiredProperty}
+            handleAdvancedSettingClick={props.handleAdvancedSettingClick}
+          />
+        ) : (
+          <Empty />
+        )}
       </div>
     );
   },

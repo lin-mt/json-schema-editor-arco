@@ -20,7 +20,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useI18n } from '../i18n';
 import ImportModal from '../SchemaItem/ImportModal';
-import { JSONSchema7 } from '../types';
+import { JSONSchema } from '../types';
 import {
   SchemaTypeOptions,
   getDefaultSchema,
@@ -38,7 +38,7 @@ type SchemaItemProps = {
   namePath?: number[];
   isArrayItems?: boolean;
   isRequire?: boolean;
-  schema: JSONSchema7;
+  schema: JSONSchema;
   defaultExpand?: boolean; // 树结构默认展开/收敛
   changeSchema?: (
     namePath: number[],
@@ -51,7 +51,7 @@ type SchemaItemProps = {
   updateRequiredProperty?: (namePath: number[], removed: boolean) => void;
   handleAdvancedSettingClick?: (
     namePath: number[],
-    schema: JSONSchema7,
+    schema: JSONSchema,
     propertyName?: string,
   ) => boolean;
 };
@@ -345,7 +345,7 @@ function SchemaItem(props: SchemaItemProps) {
                     getPropertyIndex(schema.properties, name),
                   )}
                   propertyName={name}
-                  schema={schema.properties[name] as JSONSchema7}
+                  schema={schema.properties[name] as JSONSchema}
                   handleAdvancedSettingClick={handleAdvancedSettingClick}
                 />
               </div>
@@ -362,7 +362,7 @@ function SchemaItem(props: SchemaItemProps) {
           defaultExpand={defaultExpand}
           propertyName={'items'}
           namePath={namePath.concat(getPropertyIndex(schema, 'items'))}
-          schema={schema.items as JSONSchema7}
+          schema={schema.items as JSONSchema}
           handleAdvancedSettingClick={handleAdvancedSettingClick}
         />
       )}
